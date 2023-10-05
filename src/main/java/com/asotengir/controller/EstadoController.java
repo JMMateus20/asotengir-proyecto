@@ -44,8 +44,8 @@ public class EstadoController {
 	}
 	
 	@RequestMapping(value = "estados/ciudades/{estadoID}")
-	public ResponseEntity<?> listarCiudades(@PathVariable Long estadoID, @PageableDefault(page = 0, size = 10, sort = "nomCiudad") Pageable page){
-		return estadoService.listarCiudades(estadoID, page);
+	public ResponseEntity<?> listarCiudades(@PathVariable Long estadoID){
+		return estadoService.listarCiudades(estadoID);
 	}
 
 }

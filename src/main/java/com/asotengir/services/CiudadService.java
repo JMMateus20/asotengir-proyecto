@@ -11,5 +11,5 @@ public interface CiudadService {
 	ResponseEntity<List<EstadoCiudadDTO>> listarCiudades();
 	
 	
-	ResponseEntity<?> buscarPorNombre(String nomCiudad);
+	ResponseEntity<?> buscarPorId(Long idCiudad);
 }

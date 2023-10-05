@@ -60,13 +60,13 @@ public class EstadoServiceImpl implements EstadoService{
 
 
 	@Override
-	public ResponseEntity<?> listarCiudades(Long idEstado, Pageable page) {
+	public ResponseEntity<?> listarCiudades(Long idEstado) {
 		Optional<Estado> estadoFound=estadoRep.findById(idEstado);
 		if (!estadoFound.isPresent()) {
 			return new ResponseEntity<>("estado no encontrado", HttpStatus.NOT_FOUND);
 		}
-		Page<Ciudad> ciudades=ciudadRep.findByEstado(estadoFound.get(), page);
-		List<EstadoCiudad> response=ciudades.getContent().stream()
+		List<Ciudad> ciudades=ciudadRep.findByEstado(estadoFound.get());
+		List<EstadoCiudad> response=ciudades.stream()
 				.map(ciudad->{
 					EstadoCiudad resp=new EstadoCiudad(ciudad.getNomCiudad(), ciudad.getIdCiudad());
 					return resp;

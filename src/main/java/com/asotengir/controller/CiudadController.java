@@ -23,8 +23,8 @@ public class CiudadController {
 	}
 	
 	@RequestMapping(value = "ciudades")
-	public ResponseEntity<?> buscarPorNombre(@RequestParam(name = "nombre", required = true) String nomCiudad){
-		return ciudadService.buscarPorNombre(nomCiudad);
+	public ResponseEntity<?> buscarPorId(@RequestParam(name = "idCiudad", required = true) Long idCiudad){
+		return ciudadService.buscarPorId(idCiudad);
 	}
 
 }

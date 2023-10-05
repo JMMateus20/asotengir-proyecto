@@ -1,5 +1,7 @@
 package com.asotengir.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.asotengir.dao.RegistroEstadoDTO;
 import com.asotengir.dao.RegistroPaisDTO;
+import com.asotengir.model.Pais;
 import com.asotengir.services.PaisService;
 import com.asotengir.services.ValidacionService;
 
@@ -53,8 +56,13 @@ public class PaisController {
 	}
 	
 	@RequestMapping(value = "paises/estados/{idPais}")
-	public ResponseEntity<?> encontrarEstados(@PathVariable Long idPais, @PageableDefault(page = 0, size = 10) Pageable page){
-		return paisService.buscarEstados(idPais, page);
+	public ResponseEntity<?> encontrarEstados(@PathVariable Long idPais){
+		return paisService.buscarEstados(idPais);
+	}
+	
+	@RequestMapping(value = "paises")
+	public ResponseEntity<List<Pais>> listar(){
+		return paisService.listar();
 	}
 
 }

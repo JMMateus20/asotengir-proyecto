@@ -14,5 +14,5 @@ public interface EstadoService {
 	ResponseEntity<?> buscar(Long idEstado);
 	
 	
-	ResponseEntity<?> listarCiudades(Long idEstado, Pageable page);
+	ResponseEntity<?> listarCiudades(Long idEstado);
 }

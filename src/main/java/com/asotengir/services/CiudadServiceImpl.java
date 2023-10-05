@@ -31,8 +31,8 @@ public class CiudadServiceImpl implements CiudadService{
 	}
 
 	@Override
-	public ResponseEntity<?> buscarPorNombre(String nomCiudad) {
-		Optional<Ciudad> ciudadFound=ciudadRep.findByNomCiudad(nomCiudad);
+	public ResponseEntity<?> buscarPorId(Long idCiudad) {
+		Optional<Ciudad> ciudadFound=ciudadRep.findById(idCiudad);
 		if (!ciudadFound.isPresent()) {
 			return new ResponseEntity<>("ciudad no encontrada", HttpStatus.NOT_FOUND);
 		}

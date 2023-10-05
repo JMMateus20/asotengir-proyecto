@@ -77,22 +77,28 @@ public class PaisServiceImpl implements PaisService{
 	}
 
 	@Override
-	public ResponseEntity<?> buscarEstados(Long idPais, Pageable page) {
+	public ResponseEntity<?> buscarEstados(Long idPais) {
 		Optional<Pais> paisFound=paisRep.findById(idPais);
 		if (!paisFound.isPresent()) {
 			return new ResponseEntity<>("pais no encontrado", HttpStatus.NOT_FOUND);
 		}
-		Page<Estado> estados=estadoRep.findByPais(paisFound.get(), page);
-		if (!estados.hasContent()) {
+		List<Estado> estados=estadoRep.findByPais(paisFound.get());
+		if (estados.isEmpty()) {
 			return ResponseEntity.noContent().build();
 		}
-		List<EstadoDto> response=estados.getContent().stream()
+		List<EstadoDto> response=estados.stream()
 				.map(estado->{
 					EstadoDto resp=new EstadoDto(estado.getIdEstado(), estado.getNomEstado());
 					return resp;
 				}).collect(Collectors.toList());
 		return ResponseEntity.ok(response);
 		
+	}
+
+	@Override
+	public ResponseEntity<List<Pais>> listar() {
+		List<Pais> response=paisRep.findAll();
+		return ResponseEntity.ok(response);
 	}
 	
 	
