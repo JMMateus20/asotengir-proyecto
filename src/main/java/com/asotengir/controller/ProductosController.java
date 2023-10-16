@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -57,6 +58,20 @@ public class ProductosController {
 		return productoService.modificar(idProducto, datos);
 	}
 	
+	@RequestMapping(value = "productos/categoria/{idCategoria}")
+	public ResponseEntity<?> buscarPorCategoria(@PathVariable Long idCategoria){
+		return productoService.encontrarPorCategoria(idCategoria);
+	}
+	
+	@RequestMapping(value = "productos/marca/{idMarca}")
+	public ResponseEntity<?> buscarPorMarca(@PathVariable Long idMarca){
+		return productoService.encontrarPorMarca(idMarca);
+	}
+	
+	@RequestMapping(value = "productos/filtro")
+	public ResponseEntity<?> filtrarPorCategoriaOMarca(@RequestParam(name = "categoria", required = false) Long idCategoria, @RequestParam(name = "marca", required = false) Long idMarca){
+		return productoService.filtrarPorCategoriaOMarca(idCategoria, idMarca);
+	}
 	
 
 }

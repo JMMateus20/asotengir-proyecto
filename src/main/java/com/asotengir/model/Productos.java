@@ -22,11 +22,12 @@ public class Productos {
     private String modelo;
     
     
-
+    
     @ManyToOne
     @JoinColumn(name = "marca_id")
     private Marcas marca;
 
+    
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categorias categoria;

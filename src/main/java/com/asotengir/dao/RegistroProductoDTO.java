@@ -11,16 +11,29 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class RegistroProductoDTO {
 	@NotBlank(message = "el nombre del producto no puede estar vacío")
 	private String nomProducto;
     private String descripcion;
     private String modelo;
-    private String marca;
-    @NotBlank(message = "El producto debe pertenecer a una categoría específica")
-    private String categoria;
+    private Long marca;
+    @NotNull(message = "El producto debe pertenecer a una categoría específica")
+    private Long categoria;
     private String baseView;
+    
+	public RegistroProductoDTO(@NotBlank(message = "el nombre del producto no puede estar vacío") String nomProducto,
+			String descripcion, String modelo, Long marca,
+			@NotBlank(message = "El producto debe pertenecer a una categoría específica") Long categoria,
+			String baseView) {
+		this.nomProducto = nomProducto;
+		this.descripcion = (descripcion!=null) ? descripcion:"sin descripción";
+		this.modelo = (modelo!=null) ? modelo:"sin modelo";
+		this.marca = marca;
+		this.categoria = categoria;
+		this.baseView = baseView;
+	}
+    
+    
     
 }

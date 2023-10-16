@@ -17,4 +17,13 @@ public interface ProductoService {
 	
 	
 	ResponseEntity<?> modificar(Long idProducto ,ActualizarProductoDTO datos);
+	
+	
+	ResponseEntity<?> encontrarPorCategoria(Long idCategoria);
+	
+	
+	ResponseEntity<?> encontrarPorMarca(Long idMarca);
+	
+	
+	ResponseEntity<?> filtrarPorCategoriaOMarca(Long idCategoria, Long idMarca);
 }

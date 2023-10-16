@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,14 +35,14 @@ public class ProductoServiceImpl implements ProductoService{
 	
 	@Override
 	public ResponseEntity<?> insertar(RegistroProductoDTO datos) {
-		Optional<Categorias> categoriaFound=categoriaRep.findByNomCategoria(datos.getCategoria());
+		Optional<Categorias> categoriaFound=categoriaRep.findById(datos.getCategoria());
 		if (!categoriaFound.isPresent()) {
 			return ResponseEntity.badRequest().body("categoria no encontrada");
 		}
 		Categorias categoriaBD=categoriaFound.get();
 		Marcas marcaBD=null;
 		if (datos.getMarca()!=null) {
-			Optional<Marcas> marcaFound=marcaRep.findByNomMarca(datos.getMarca());
+			Optional<Marcas> marcaFound=marcaRep.findById(datos.getMarca());
 			if (!marcaFound.isPresent()) {
 				return ResponseEntity.badRequest().body("marca no encontrada");
 			}
@@ -144,6 +145,61 @@ public class ProductoServiceImpl implements ProductoService{
 		return ResponseEntity.ok(response);
 		
 		
+	}
+
+	@Override
+	public ResponseEntity<?> encontrarPorCategoria(Long idCategoria) {
+		Optional<Categorias> categoriaFound=categoriaRep.findById(idCategoria);
+		if (!categoriaFound.isPresent()) {
+			return new ResponseEntity<>("Categoría no encontrada", HttpStatus.NOT_FOUND);
+		}
+		List<ProductoDTO> productos=productoRep.findByCategoria(categoriaFound.get()).stream()
+				.map(producto->{
+					ProductoDTO resp=new ProductoDTO(producto.getIdProducto(), producto.getNomProducto(), (producto.getDescripcion()!=null) ? producto.getDescripcion():"sin descripcion" , (producto.getModelo()!=null)?producto.getModelo():"Sin modelo", (producto.getMarca()!=null)?producto.getMarca().getNomMarca():"sin marca", producto.getCategoria().getNomCategoria(), (producto.getBaseView()!=null)?producto.getBaseView():"xxx", (producto.getMarca()!=null)?producto.getMarca().getIdMarca():null,producto.getCategoria().getIdCategoria());
+					return resp;
+				}).collect(Collectors.toList());
+		return ResponseEntity.ok(productos);
+	}
+
+	@Override
+	public ResponseEntity<?> encontrarPorMarca(Long idMarca) {
+		Optional<Marcas> marcaFound=marcaRep.findById(idMarca);
+		if (!marcaFound.isPresent()) {
+			return new ResponseEntity<>("marca no encontrada", HttpStatus.NOT_FOUND);
+		}
+		List<ProductoDTO> productos=productoRep.findByMarca(marcaFound.get()).stream()
+				.map(producto->{
+					ProductoDTO resp=new ProductoDTO(producto.getIdProducto(), producto.getNomProducto(), (producto.getDescripcion()!=null)?producto.getDescripcion():"sin descripcion", (producto.getModelo()!=null)?producto.getModelo():"sin modelo", producto.getMarca().getNomMarca(), producto.getCategoria().getNomCategoria(), (producto.getBaseView()!=null)?producto.getBaseView():"xxx", producto.getMarca().getIdMarca(), producto.getCategoria().getIdCategoria());
+					return resp;
+				}).collect(Collectors.toList());
+		return ResponseEntity.ok(productos);
+	}
+
+	@Override
+	public ResponseEntity<?> filtrarPorCategoriaOMarca(Long idCategoria, Long idMarca) {
+		Categorias categoriaBD=null;
+		Marcas marcaBD=null;
+		if (idCategoria!=null) {
+			Optional<Categorias> categoriaFound=categoriaRep.findById(idCategoria);
+			if (!categoriaFound.isPresent()) {
+				return new ResponseEntity<>("Categoría no encontrada", HttpStatus.NOT_FOUND);
+			}
+			categoriaBD=categoriaFound.get();
+		}
+		if (idMarca!=null) {
+			Optional<Marcas> marcaFound=marcaRep.findById(idMarca);
+			if (!marcaFound.isPresent()) {
+				return new ResponseEntity<>("marca no encontrada", HttpStatus.NOT_FOUND);
+			}
+			marcaBD=marcaFound.get();
+		}
+		
+		List<ProductoDTO> productos=productoRep.findByCategoriaOrMarca(categoriaBD, marcaBD)
+				.stream().map(prod->{
+					ProductoDTO resp=new ProductoDTO(prod.getIdProducto(), prod.getNomProducto(), (prod.getDescripcion()!=null)?prod.getDescripcion():"sin descripcion", (prod.getModelo()!=null)?prod.getModelo():"sin modelo", (prod.getMarca()!=null)?prod.getMarca().getNomMarca():"sin marca", prod.getCategoria().getNomCategoria(), (prod.getBaseView()!=null)?prod.getBaseView():"xxx", (prod.getMarca()!=null)?prod.getMarca().getIdMarca():null, prod.getCategoria().getIdCategoria());
+					return resp;
+				}).collect(Collectors.toList());
+		return ResponseEntity.ok(productos);
 	}
 
 }
