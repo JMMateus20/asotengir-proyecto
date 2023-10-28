@@ -44,7 +44,8 @@ public class PaisServiceImpl implements PaisService{
 		}
 		Pais paisNuevo=new Pais(datos.getNomPais());
 		paisRep.save(paisNuevo);
-		return ResponseEntity.ok("registrado");
+		PaisDto response=new PaisDto(paisNuevo.getIdPais(), paisNuevo.getNomPais());
+		return ResponseEntity.ok(response);
 	}
 	
 	@Override
@@ -62,7 +63,8 @@ public class PaisServiceImpl implements PaisService{
 		Estado estadoNuevo=new Estado(datos.getNomEstado(), paisBD);
 		paisBD.addEstado(estadoNuevo);
 		paisRep.save(paisBD);
-		return ResponseEntity.ok("estado agregado");
+		EstadoDto response=new EstadoDto(estadoNuevo.getIdEstado(), estadoNuevo.getNomEstado());
+		return ResponseEntity.ok(response);
 	}
 
 	@Override

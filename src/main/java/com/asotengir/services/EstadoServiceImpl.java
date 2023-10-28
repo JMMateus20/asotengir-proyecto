@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.asotengir.dao.EstadoCiudad;
 import com.asotengir.dao.EstadoDto;
+import com.asotengir.dao.EstadoPais;
 import com.asotengir.dao.PaisDto;
 import com.asotengir.dao.RegistroCiudadDTO;
 import com.asotengir.dao.RegistroEstadoDTO;
@@ -43,7 +44,8 @@ public class EstadoServiceImpl implements EstadoService{
 		Ciudad ciudadNueva=new Ciudad(datos.getNomCiudad(), estadoBD);
 		estadoBD.addCiudad(ciudadNueva);
 		estadoRep.save(estadoBD);
-		return ResponseEntity.ok("ok");
+		EstadoCiudad response=new EstadoCiudad(ciudadNueva.getNomCiudad(), ciudadNueva.getIdCiudad());
+		return ResponseEntity.ok(response);
 	}
 
 
@@ -72,6 +74,16 @@ public class EstadoServiceImpl implements EstadoService{
 					return resp;
 				}).collect(Collectors.toList());
 		return ResponseEntity.ok(response);
+	}
+
+
+	@Override
+	public ResponseEntity<?> listarEstados() {
+		List<EstadoPais> estados=estadoRep.listarEstados();
+		if (estados.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.ok(estados);
 	}
 	
 	

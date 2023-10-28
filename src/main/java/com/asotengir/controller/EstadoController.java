@@ -47,5 +47,10 @@ public class EstadoController {
 	public ResponseEntity<?> listarCiudades(@PathVariable Long estadoID){
 		return estadoService.listarCiudades(estadoID);
 	}
+	
+	@RequestMapping(value = "estados")
+	public ResponseEntity<?> listarEstados(){
+		return estadoService.listarEstados();
+	}
 
 }

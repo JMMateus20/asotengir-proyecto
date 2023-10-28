@@ -1,6 +1,7 @@
 package com.asotengir.services;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 
 import com.asotengir.dao.RegistroCiudadDTO;
@@ -15,4 +16,7 @@ public interface EstadoService {
 	
 	
 	ResponseEntity<?> listarCiudades(Long idEstado);
+	
+	
+	ResponseEntity<?> listarEstados();
 }
