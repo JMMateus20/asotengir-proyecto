@@ -44,7 +44,8 @@ public class EstadoServiceImpl implements EstadoService{
 		Ciudad ciudadNueva=new Ciudad(datos.getNomCiudad(), estadoBD);
 		estadoBD.addCiudad(ciudadNueva);
 		estadoRep.save(estadoBD);
-		EstadoCiudad response=new EstadoCiudad(ciudadNueva.getNomCiudad(), ciudadNueva.getIdCiudad());
+		Ciudad ciudadBD=estadoBD.getCiudades().get(estadoBD.getCiudades().size()-1);
+		EstadoCiudad response=new EstadoCiudad(ciudadBD.getNomCiudad(), ciudadBD.getIdCiudad());
 		return ResponseEntity.ok(response);
 	}
 

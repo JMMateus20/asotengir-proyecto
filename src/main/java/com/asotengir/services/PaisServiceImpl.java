@@ -63,7 +63,8 @@ public class PaisServiceImpl implements PaisService{
 		Estado estadoNuevo=new Estado(datos.getNomEstado(), paisBD);
 		paisBD.addEstado(estadoNuevo);
 		paisRep.save(paisBD);
-		EstadoDto response=new EstadoDto(estadoNuevo.getIdEstado(), estadoNuevo.getNomEstado());
+		Estado estadoBD=paisBD.getEstados().get(paisBD.getEstados().size()-1);
+		EstadoDto response=new EstadoDto(estadoBD.getIdEstado(), estadoBD.getNomEstado());
 		return ResponseEntity.ok(response);
 	}
 
